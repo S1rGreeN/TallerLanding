@@ -6,13 +6,12 @@ const configContent = `
 // Este archivo fue generado automáticamente por create-config.js
 
 export const firebaseConfig = {
-  apiKey: "${process.env.apiKey}",
-  authDomain: "${process.env.authDomain}",
-  projectId: "${process.env.projectId}",
-  databaseURL: "${process.env.databaseURL},
-  storageBucket: "${process.env.storageBucket}",
-  messagingSenderId: "${process.env.messagingSenderId}",
-  appId: "${process.env.appId}"
+  apiKey: "${process.env.FIREBASE_API_KEY}",
+  authDomain: "${process.env.FIREBASE_AUTH_DOMAIN}",
+  projectId: "${process.env.FIREBASE_PROJECT_ID}",
+  storageBucket: "${process.env.FIREBASE_STORAGE_BUCKET}",
+  messagingSenderId: "${process.env.FIREBASE_MESSAGING_SENDER_ID}",
+  appId: "${process.env.FIREBASE_APP_ID}"
 };
 `;
 
