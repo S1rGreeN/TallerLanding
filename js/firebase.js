@@ -1,6 +1,3 @@
-// Importar funciones de Firebase desde el CDN oficial
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
 
 // Importar funciones de Firebase desde el CDN oficial
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
