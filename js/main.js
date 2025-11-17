@@ -3,62 +3,79 @@ import { saveReview, getReviews } from './firebase.js';
 
 // Variables globales
 let currentRating = 0;
-let currentTallerId = null; // Para saber qué taller está abierto
+let currentTallerId = null;
 
-// --- Funciones de Modal ---
+/**
+ * Abre un modal por su ID.
+ * @param {string} modalId - El ID del modal a abrir (ej. "loginModal")
+ */
 function openModal(modalId) {
-  document.getElementById(modalId).classList.add('active');
-  document.body.style.overflow = 'hidden';
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
 }
 
-function closeModal(modalId) {
-  document.getElementById(modalId).classList.remove('active');
+/**
+ * Cierra todos los modales activos.
+ */
+function closeModal() {
+  document.querySelectorAll('.modal.active').forEach(modal => {
+    modal.classList.remove('active');
+  });
   document.body.style.overflow = 'auto';
 }
 
+/**
+ * Muestra/oculta el menú móvil.
+ */
 function toggleMobileMenu() {
   const menu = document.getElementById('mobileMenu');
   menu.classList.toggle('hidden');
 }
 
-// --- Sistema de Calificación ---
+/**
+ * Establece la calificación por estrellas.
+ * @param {number} rating - El número de estrellas (1-5)
+ */
 function setRating(rating) {
   currentRating = rating;
   const stars = document.querySelectorAll('.rating-star');
   const ratingText = document.getElementById('ratingText');
-
-  stars.forEach((star, index) => {
-    star.style.color = (index < rating) ? '#f59e0b' : '#d1d5db';
+  
+  stars.forEach(star => {
+    const starRating = parseInt(star.dataset.rating, 10);
+    star.style.color = (starRating <= rating) ? '#f59e0b' : '#d1d5db';
   });
 
   const ratingTexts = { 1: 'Muy malo', 2: 'Malo', 3: 'Regular', 4: 'Bueno', 5: 'Excelente' };
   ratingText.textContent = ratingTexts[rating] || 'Selecciona una calificación';
 }
 
-// --- Lógica de Firebase ---
-
-// Función asincrónica para mostrar reseñas
+/**
+ * Carga y muestra las reseñas de Firebase para un taller.
+ * @param {string} tallerId - El ID del taller (ej. "confecciones-elite")
+ */
 async function loadReviews(tallerId) {
-  const reviewsContainer = document.querySelector("#tallerDetailModal .space-y-4");
+  const reviewsContainer = document.getElementById("reviewsContainer");
   reviewsContainer.innerHTML = "<p>Cargando reseñas...</p>";
-
+  
   const reviews = await getReviews(tallerId);
-
   reviewsContainer.innerHTML = ""; // Limpiar
-
+  
   if (reviews.length === 0) {
     reviewsContainer.innerHTML = "<p>No hay reseñas para este taller aún. ¡Sé el primero!</p>";
   } else {
     reviews.forEach(review => {
       const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
-      const reviewDate = review.createdAt.toDate().toLocaleDateString(); // Formatear fecha
-
+      // Asegurarse de que createdAt sea un objeto Date
+      const reviewDate = (review.createdAt.toDate ? review.createdAt.toDate() : new Date(review.createdAt)).toLocaleDateString();
+      
       reviewsContainer.innerHTML += `
         <div class="bg-gray-50 p-5 rounded-xl">
           <div class="flex items-center mb-2">
-            <div class="flex text-accent mr-2">
-              <span class="text-xl">${stars}</span>
-            </div>
+            <div class="flex text-accent mr-2"><span class="text-xl">${stars}</span></div>
             <span class="font-semibold text-dark">${review.author}</span>
             <span class="text-gray-500 text-sm ml-auto">${reviewDate}</span>
           </div>
@@ -69,34 +86,27 @@ async function loadReviews(tallerId) {
   }
 }
 
-// Función para abrir el detalle del taller
-function openTallerDetail(tallerId, tallerName) {
-  currentTallerId = tallerId; // Guardar el ID del taller actual
-
-  document.getElementById('tallerName').textContent = tallerName;
-  openModal('tallerDetailModal');
-
-  // Cargar las reseñas para este taller
-  loadReviews(tallerId);
-}
-
-// Manejar el envío de la reseña
-async function submitReview(event) {
-  event.preventDefault();
-
+/**
+ * Maneja el envío del formulario de reseña.
+ * @param {Event} event - El evento de envío del formulario
+ */
+async function handleReviewSubmit(event) {
+  event.preventDefault(); // Evitar que la página se recargue
+  
   if (currentRating === 0) {
     alert('Por favor selecciona una calificación');
     return;
   }
+  
+  const form = event.target;
+  const comment = form.querySelector('textarea').value;
+  const submitButton = form.querySelector('button[type="submit"]');
 
-  const comment = event.target.querySelector('textarea').value;
   const reviewData = {
     rating: currentRating,
     comment: comment || "Sin comentario."
   };
 
-  // Deshabilitar el botón mientras se guarda
-  const submitButton = event.target.querySelector('button[type="submit"]');
   submitButton.disabled = true;
   submitButton.textContent = "Publicando...";
 
@@ -104,69 +114,94 @@ async function submitReview(event) {
 
   if (success) {
     alert('¡Gracias por tu reseña!');
-    event.target.reset();
-    currentRating = 0;
-    setRating(0);
-
-    // Recargar las reseñas para mostrar la nueva
-    loadReviews(currentTallerId);
-
+    form.reset();
+    setRating(0); // Reiniciar estrellas
+    loadReviews(currentTallerId); // Recargar reseñas
   } else {
     alert('Hubo un error al guardar tu reseña.');
   }
-
+  
   submitButton.disabled = false;
   submitButton.textContent = "Publicar Reseña";
 }
 
-// --- Exponer funciones al Window ---
-// Como usamos módulos, debemos "exponer" manualmente las funciones
-// que son llamadas por `onclick` en el HTML.
-window.openModal = openModal;
-window.closeModal = closeModal;
-window.toggleMobileMenu = toggleMobileMenu;
-window.setRating = setRating;
-window.submitReview = submitReview;
+// --- TODO SE CONECTA AQUÍ ---
+// Este código se ejecuta una vez que el DOM está listo.
+document.addEventListener('DOMContentLoaded', () => {
 
-// Manejador de eventos para botones de "Ver Detalles"
-// Esto es mejor que usar `onclick` en cada botón.
+  // Botones de la Navbar
+  document.getElementById('loginButton')?.addEventListener('click', () => openModal('loginModal'));
+  document.getElementById('registerButton')?.addEventListener('click', () => openModal('registerModal'));
+  document.getElementById('mobileMenuButton')?.addEventListener('click', toggleMobileMenu);
 
-// 1. Dales a todos los botones de "Ver Detalles" un ID y nombre de taller.
-// Ej: <button data-taller-id="confecciones-elite" data-taller-name="Confecciones Elite" ...>
-// Tu HTML ya tiene: onclick="openTallerDetail(1)"
-// Vamos a mejorarlo. Reemplaza los `onclick` en tu HTML:
+  // Botones para cerrar modales
+  document.querySelectorAll('.close-modal-button').forEach(button => {
+    button.addEventListener('click', closeModal);
+  });
+  
+  // Clic en el fondo oscuro del modal para cerrar
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', (event) => {
+      // Si el clic fue en el fondo (el propio modal) y no en su contenido
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+  });
 
-// Taller 1:
-// ANTES: onclick="openTallerDetail(1)"
-// DESPUÉS: data-taller-id="confecciones-elite" data-taller-name="Confecciones Elite"
+  // Botones "Ver Detalles" de los talleres
+  document.querySelectorAll('[data-taller-id]').forEach(button => {
+    button.addEventListener('click', () => {
+      currentTallerId = button.dataset.tallerId;
+      const tallerName = button.dataset.tallerName;
+      
+      document.getElementById('tallerName').textContent = tallerName;
+      openModal('tallerDetailModal');
+      loadReviews(currentTallerId);
+    });
+  });
 
-// Taller 2:
-// ANTES: onclick="openTallerDetail(2)"
-// DESPUÉS: data-taller-id="moda-express" data-taller-name="Moda Express"
-// ...y así con todos
+  // Estrellas de calificación
+  document.querySelectorAll('.rating-star').forEach(star => {
+    star.addEventListener('click', () => {
+      const rating = parseInt(star.dataset.rating, 10);
+      setRating(rating);
+    });
+  });
 
-// 2. Añade esta lógica en su lugar:
-document.addEventListener('click', (event) => {
-  const button = event.target.closest('[data-taller-id]');
-  if (button) {
-    const tallerId = button.dataset.tallerId;
-    const tallerName = button.dataset.tallerName;
-    openTallerDetail(tallerId, tallerName);
-  }
+  // Formularios
+  document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Manejar lógica de Login (aún no implementada)');
+    closeModal();
+  });
+  
+  document.getElementById('registerForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Manejar lógica de Registro (aún no implementada)');
+    closeModal();
+  });
+
+  document.getElementById('tallerForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('¡Solicitud enviada! (aún no implementada)');
+    e.target.reset();
+  });
+
+  document.getElementById('reviewForm')?.addEventListener('submit', handleReviewSubmit);
+
+  // Smooth scroll para anclas (ej. #top-talleres)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Opcional: cerrar menú móvil si está abierto
+        document.getElementById('mobileMenu').classList.add('hidden');
+      }
+    });
+  });
+
 });
-
-// Manejar el formulario de "Registra tu Taller"
-function submitTallerForm(event) {
-    event.preventDefault();
-    alert('¡Solicitud enviada exitosamente! Nos pondremos en contacto contigo.');
-    event.target.reset();
-}
-window.submitTallerForm = submitTallerForm; // Exponer
-
-// Cerrar modales al hacer clic fuera
-window.onclick = function(event) {
-  if (event.target.classList.contains('modal')) {
-    event.target.classList.remove('active');
-    document.body.style.overflow = 'auto';
-  }
-}

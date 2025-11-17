@@ -1,3 +1,37 @@
+/* Para que el scroll sea suave */
 html {
   scroll-behavior: smooth;
+}
+
+/* --- ESTILOS DE MODAL --- */
+/* Esta es la parte que faltaba */
+
+/* El fondo oscuro */
+.modal {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow-y: auto;
+}
+
+/* El estado visible */
+.modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animación de entrada */
+.modal-content {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
