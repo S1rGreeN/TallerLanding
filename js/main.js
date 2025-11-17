@@ -1,4 +1,4 @@
-// Importar las funciones de nuestro archivo firebase.js
+// --- ¡AHORA IMPORTAMOS LAS FUNCIONES REALES! ---
 import { saveReview, getReviews } from './firebase.js';
 
 // Variables globales
@@ -41,7 +41,7 @@ function toggleMobileMenu() {
  */
 function setRating(rating) {
   currentRating = rating;
-  const stars = document.querySelectorAll('.rating-star');
+  const stars = document.querySelectorAll('#tallerDetailModal .rating-star'); // Sé más específico
   const ratingText = document.getElementById('ratingText');
   
   stars.forEach(star => {
@@ -228,7 +228,73 @@ async function handleReviewSubmit(event) {
 // --- TODO SE CONECTA AQUÍ ---
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ... (Event Listeners para botones de modal, etc.) ...
+  // [CORRECCIÓN] - Faltaban todos estos listeners
+  
+  // Botones de la Navbar
+  document.getElementById('loginButton')?.addEventListener('click', () => openModal('loginModal'));
+  document.getElementById('registerButton')?.addEventListener('click', () => openModal('registerModal'));
+  document.getElementById('mobileMenuButton')?.addEventListener('click', toggleMobileMenu);
+
+  // Botones para cerrar modales
+  document.querySelectorAll('.close-modal-button').forEach(button => {
+    button.addEventListener('click', closeModal);
+  });
+  
+  // Clic en el fondo oscuro del modal para cerrar
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', (event) => {
+      // Si el clic fue en el fondo (el propio modal) y no en su contenido
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+  });
+  
+  // Estrellas de calificación (dentro del modal de detalle)
+  document.querySelectorAll('#tallerDetailModal .rating-star').forEach(star => {
+    star.addEventListener('click', () => {
+      const rating = parseInt(star.dataset.rating, 10);
+      setRating(rating);
+    });
+  });
+
+  // Formularios
+  document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Manejar lógica de Login (aún no implementada)');
+    closeModal();
+  });
+  
+  document.getElementById('registerForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Manejar lógica de Registro (aún no implementada)');
+    closeModal();
+  });
+
+  document.getElementById('tallerForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('¡Solicitud enviada! (aún no implementada)');
+    e.target.reset();
+  });
+
+  document.getElementById('reviewForm')?.addEventListener('submit', handleReviewSubmit);
+
+  // Smooth scroll para anclas (ej. #top-talleres)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Opcional: cerrar menú móvil si está abierto
+        document.getElementById('mobileMenu').classList.add('hidden');
+      }
+    });
+  });
+  
+  // --- FIN DE LA CORRECCIÓN ---
+
 
   // Botones "Ver Detalles" de los talleres
   document.querySelectorAll('[data-taller-id]').forEach(button => {
@@ -242,8 +308,6 @@ document.addEventListener('DOMContentLoaded', () => {
       loadReviews(currentTallerId); // Carga las reseñas y el rating del modal
     });
   });
-
-  // ... (Event Listeners para estrellas y formularios) ...
 
   // --- [NUEVO] Cargar todas las calificaciones de las tarjetas al iniciar ---
   function loadAllWorkshopRatings() {
