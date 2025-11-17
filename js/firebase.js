@@ -2,16 +2,24 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
 
-// Importar nuestra configuración local (que está en .gitignore)
+// Importar funciones de Firebase desde el CDN oficial
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
+
+// Importar nuestra configuración local
 import { firebaseConfig } from "./firebaseConfig.js";
 
-// Inicializar Firebase
+// --- INICIALIZACIÓN DE FIREBASE ---
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// --- [LA LÍNEA QUE FALTA] ---
+// Esta es la línea que probablemente faltaba en tu archivo.
+// Define la variable 'reviewsCollection' como una referencia a la colección "reviews".
+const reviewsCollection = collection(db, "reviews");
+
 /**
  * Guarda una nueva reseña en Firestore.
- * (Función flecha asincrónica)
  */
 export const saveReview = async (tallerId, reviewData) => {
   try {
@@ -19,30 +27,30 @@ export const saveReview = async (tallerId, reviewData) => {
       tallerId: tallerId,
       rating: reviewData.rating,
       comment: reviewData.comment,
-      author: "Anónimo", // Votación anónima
-      createdAt: serverTimestamp() // Usa la hora del servidor
+      author: "Anónimo",
+      createdAt: serverTimestamp()
     };
     
+    // Ahora 'reviewsCollection' SÍ está definida y esta línea funcionará.
     await addDoc(reviewsCollection, review);
     return true;
     
   } catch (e) {
-    console.error("Error al guardar la reseña: ", e);
+    console.error("Error al guardar la reseña (Firebase): ", e); // Log más detallado
     return false;
   }
 };
 
 /**
  * Obtiene todas las reseñas de un taller específico.
- * (Función flecha asincrónica)
  */
 export const getReviews = async (tallerId) => {
   try {
-    // Consultar reseñas que coincidan con el tallerId y ordenarlas por fecha
+    // Ahora 'reviewsCollection' SÍ está definida y esta línea funcionará.
     const q = query(
       reviewsCollection, 
       where("tallerId", "==", tallerId),
-      orderBy("createdAt", "desc") // Mostrar las más nuevas primero
+      orderBy("createdAt", "desc")
     );
     
     const querySnapshot = await getDocs(q);
@@ -55,7 +63,7 @@ export const getReviews = async (tallerId) => {
     return reviews;
     
   } catch (e) {
-    console.error("Error al obtener reseñas: ", e);
+    console.error("Error al obtener reseñas (Firebase): ", e); // Log más detallado
     return [];
   }
 };
