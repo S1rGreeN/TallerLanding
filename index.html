@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TallerConnect - Encuentra tu Taller Ideal</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Jura:wght@300..700&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+
+    <link href="style.css" rel="stylesheet">
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              
+              'primary': 'rgb(250 128 114)', // Salmón/Coral
+              'secondary': 'rgb(255 244 225)', // Crema
+              'textGray': 'rgb(135 137 138)', // Gris
+
+              // Colores del HTML original
+              'dark': '#1e293b'
+            },
+            fontFamily: {
+                // 'Outfit' para títulos (clase font-display)
+                'display': ['"Outfit"', 'sans-serif'],
+          
+                // 'Lexend' para el cuerpo del texto (clase font-body)
+                'body': ['"Lexend"', 'sans-serif'],
+          
+                // 'Exo' como una opción sans-serif por defecto
+                'sans': ['"Exo"', 'sans-serif'],
+          
+                
+                'jura': ['"Jura"', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                    </svg>
+                    <span class="font-display font-bold text-2xl text-dark">TallerConnect</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="#top-talleres" class="text-gray-700 hover:text-primary font-medium transition">Top Talleres</a>
+                    <a href="#nuevos-talleres" class="text-gray-700 hover:text-primary font-medium transition">Nuevos Talleres</a>
+                    <a href="#registra-taller" class="text-gray-700 hover:text-primary font-medium transition">Registra tu Taller</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="openModal('loginModal')" class="text-primary hover:text-secondary font-medium transition">Iniciar Sesión</button>
+                    <button onclick="openModal('registerModal')" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-full font-medium transition">Registrarse</button>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-3">
+                <a href="#top-talleres" class="block text-gray-700 hover:text-primary font-medium transition">Top Talleres</a>
+                <a href="#nuevos-talleres" class="block text-gray-700 hover:text-primary font-medium transition">Nuevos Talleres</a>
+                <a href="#registra-taller" class="block text-gray-700 hover:text-primary font-medium transition">Registra tu Taller</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-20 md:py-32">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center animate-fade-in">
+                <h1 class="font-display font-bold text-4xl md:text-6xl mb-6">Encuentra el Taller de Confección Perfecto</h1>
+                <p class="text-lg md:text-xl mb-8 text-gray-100 font-body">Conectamos a diseñadores y clientes con los mejores talleres de confección. Calidad garantizada, ratings verificados.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#top-talleres" class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-full font-semibold text-lg transition">Explorar Talleres</a>
+                    <a href="#registra-taller" class="bg-accent hover:bg-yellow-500 text-white px-8 py-4 rounded-full font-semibold text-lg transition">Registrar mi Taller</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Talleres Section -->
+    <section id="top-talleres" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="font-display font-bold text-3xl md:text-4xl text-dark mb-4">Top Talleres</h2>
+                <p class="text-gray-600 text-lg font-body">Los talleres mejor valorados por nuestra comunidad</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Taller Card 1 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-primary to-secondary"></div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-display font-bold text-xl text-dark">Confecciones Elite</h3>
+                            <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">#1</span>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-2xl">★★★★★</span>
+                            </div>
+                            <span class="text-gray-600 font-medium">4.9 (256 reseñas)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4 font-body">Especialistas en prendas de alta costura con más de 15 años de experiencia. Trabajamos con las mejores telas importadas.</p>
+                        <button onclick="openTallerDetail(1)" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-xl font-semibold transition">Ver Detalles</button>
+                    </div>
+                </div>
+
+                <!-- Taller Card 2 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-purple-400 to-pink-400"></div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-display font-bold text-xl text-dark">Moda Express</h3>
+                            <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">#2</span>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-2xl">★★★★★</span>
+                            </div>
+                            <span class="text-gray-600 font-medium">4.8 (189 reseñas)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4 font-body">Confección rápida y de calidad. Especialistas en uniformes corporativos y prendas de diseño contemporáneo.</p>
+                        <button onclick="openTallerDetail(2)" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-xl font-semibold transition">Ver Detalles</button>
+                    </div>
+                </div>
+
+                <!-- Taller Card 3 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-blue-400 to-cyan-400"></div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-display font-bold text-xl text-dark">Textiles Artesanales</h3>
+                            <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold">#3</span>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-2xl">★★★★★</span>
+                            </div>
+                            <span class="text-gray-600 font-medium">4.7 (143 reseñas)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4 font-body">Trabajo artesanal con técnicas tradicionales. Perfecto para prendas únicas y exclusivas con acabados impecables.</p>
+                        <button onclick="openTallerDetail(3)" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-xl font-semibold transition">Ver Detalles</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nuevos Talleres Section -->
+    <section id="nuevos-talleres" class="py-16 md:py-24 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="font-display font-bold text-3xl md:text-4xl text-dark mb-4">Nuevos Talleres</h2>
+                <p class="text-gray-600 text-lg font-body">Los últimos talleres que se han unido a nuestra plataforma</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Nuevo Taller 1 -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover">
+                    <div class="h-40 bg-gradient-to-br from-green-400 to-emerald-500"></div>
+                    <div class="p-5">
+                        <h3 class="font-display font-bold text-lg text-dark mb-2">Costura Moderna</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-xl">★★★★☆</span>
+                            </div>
+                            <span class="text-gray-600 text-sm">4.5 (12)</span>
+                        </div>
+                        <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold mb-3">Nuevo</span>
+                        <p class="text-gray-600 text-sm mb-3 font-body">Innovación y estilo en cada prenda.</p>
+                        <button onclick="openTallerDetail(4)" class="w-full bg-primary hover:bg-secondary text-white py-2 rounded-xl font-semibold text-sm transition">Ver Más</button>
+                    </div>
+                </div>
+
+                <!-- Nuevo Taller 2 -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover">
+                    <div class="h-40 bg-gradient-to-br from-orange-400 to-red-400"></div>
+                    <div class="p-5">
+                        <h3 class="font-display font-bold text-lg text-dark mb-2">Diseños Urbanos</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-xl">★★★★☆</span>
+                            </div>
+                            <span class="text-gray-600 text-sm">4.3 (8)</span>
+                        </div>
+                        <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold mb-3">Nuevo</span>
+                        <p class="text-gray-600 text-sm mb-3 font-body">Moda urbana con actitud.</p>
+                        <button onclick="openTallerDetail(5)" class="w-full bg-primary hover:bg-secondary text-white py-2 rounded-xl font-semibold text-sm transition">Ver Más</button>
+                    </div>
+                </div>
+
+                <!-- Nuevo Taller 3 -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover">
+                    <div class="h-40 bg-gradient-to-br from-indigo-400 to-purple-500"></div>
+                    <div class="p-5">
+                        <h3 class="font-display font-bold text-lg text-dark mb-2">Taller Creativo</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-xl">★★★★★</span>
+                            </div>
+                            <span class="text-gray-600 text-sm">4.6 (15)</span>
+                        </div>
+                        <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold mb-3">Nuevo</span>
+                        <p class="text-gray-600 text-sm mb-3 font-body">Creatividad sin límites.</p>
+                        <button onclick="openTallerDetail(6)" class="w-full bg-primary hover:bg-secondary text-white py-2 rounded-xl font-semibold text-sm transition">Ver Más</button>
+                    </div>
+                </div>
+
+                <!-- Nuevo Taller 4 -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover">
+                    <div class="h-40 bg-gradient-to-br from-pink-400 to-rose-500"></div>
+                    <div class="p-5">
+                        <h3 class="font-display font-bold text-lg text-dark mb-2">Estilo & Confort</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-xl">★★★★☆</span>
+                            </div>
+                            <span class="text-gray-600 text-sm">4.4 (10)</span>
+                        </div>
+                        <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold mb-3">Nuevo</span>
+                        <p class="text-gray-600 text-sm mb-3 font-body">Comodidad elegante.</p>
+                        <button onclick="openTallerDetail(7)" class="w-full bg-primary hover:bg-secondary text-white py-2 rounded-xl font-semibold text-sm transition">Ver Más</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registra tu Taller Section -->
+    <section id="registra-taller" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="font-display font-bold text-3xl md:text-4xl text-dark mb-4">Registra tu Taller</h2>
+                    <p class="text-gray-600 text-lg font-body">Únete a nuestra comunidad y aumenta la visibilidad de tu negocio</p>
+                </div>
+
+                <!-- Política -->
+                <div class="bg-gray-50 rounded-2xl p-8 mb-8">
+                    <h3 class="font-display font-bold text-2xl text-dark mb-4">Política de Registro</h3>
+                    <div class="space-y-4 text-gray-700 font-body">
+                        <p><strong>✓</strong> Tu taller debe estar legalmente establecido con documentación vigente.</p>
+                        <p><strong>✓</strong> Compromiso con la calidad y tiempos de entrega.</p>
+                        <p><strong>✓</strong> Respeto a los derechos de los trabajadores y prácticas éticas.</p>
+                        <p><strong>✓</strong> Disponibilidad para recibir y responder reseñas de clientes.</p>
+                        <p><strong>✓</strong> Las fotos y videos deben ser representativos de tu trabajo real.</p>
+                        <p><strong>✓</strong> Revisaremos tu solicitud en un plazo de 3-5 días hábiles.</p>
+                    </div>
+                </div>
+
+                <!-- Formulario -->
+                <form class="bg-white rounded-2xl shadow-lg p-8" onsubmit="submitTallerForm(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Nombre del Taller *</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Nombre del Propietario *</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Email *</label>
+                            <input type="email" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Teléfono *</label>
+                            <input type="tel" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 font-semibold mb-2">Dirección Completa *</label>
+                        <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 font-semibold mb-2">Especialidad *</label>
+                        <select required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                            <option value="">Selecciona una especialidad</option>
+                            <option>Alta Costura</option>
+                            <option>Ropa Casual</option>
+                            <option>Uniformes</option>
+                            <option>Ropa Deportiva</option>
+                            <option>Ropa Infantil</option>
+                            <option>Otros</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 font-semibold mb-2">Años de Experiencia *</label>
+                        <input type="number" min="0" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 font-semibold mb-2">Descripción del Taller *</label>
+                        <textarea rows="4" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition" placeholder="Cuéntanos sobre tu taller, servicios, equipamiento, etc."></textarea>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-gray-700 font-semibold mb-2">Documentación (RUC, Licencia, etc.)</label>
+                        <input type="file" multiple class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none transition">
+                    </div>
+
+                    <div class="flex items-center mb-6">
+                        <input type="checkbox" required class="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary">
+                        <label class="ml-3 text-gray-700">Acepto los términos y condiciones y la política de privacidad *</label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-accent hover:bg-yellow-500 text-white py-4 rounded-xl font-bold text-lg transition">Enviar Solicitud</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="font-display font-bold text-xl mb-4">TallerConnect</h3>
+                    <p class="text-gray-400 font-body">Conectando talento con oportunidades en la industria de la confección.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Enlaces</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#top-talleres" class="hover:text-white transition">Top Talleres</a></li>
+                        <li><a href="#nuevos-talleres" class="hover:text-white transition">Nuevos Talleres</a></li>
+                        <li><a href="#registra-taller" class="hover:text-white transition">Registra tu Taller</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Términos y Condiciones</a></li>
+                        <li><a href="#" class="hover:text-white transition">Política de Privacidad</a></li>
+                        <li><a href="#" class="hover:text-white transition">Política de Cookies</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Contacto</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Email: info@tallerconnect.com</li>
+                        <li>Tel: +593 123 456 789</li>
+                        <li>Guayaquil, Ecuador</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 TallerConnect. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Login -->
+    <div id="loginModal" class="modal">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <h2 class="font-display font-bold text-2xl text-dark mb-6">Iniciar Sesión</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Contraseña</label>
+                    <input type="password" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-xl font-semibold mb-4 transition">Iniciar Sesión</button>
+                <button type="button" onclick="closeModal('loginModal')" class="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 rounded-xl font-semibold transition">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Register -->
+    <div id="registerModal" class="modal">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <h2 class="font-display font-bold text-2xl text-dark mb-6">Registrarse</h2>
+            <form onsubmit="handleRegister(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Nombre Completo</label>
+                    <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Contraseña</label>
+                    <input type="password" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Confirmar Contraseña</label>
+                    <input type="password" required class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition">
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-xl font-semibold mb-4 transition">Crear Cuenta</button>
+                <button type="button" onclick="closeModal('registerModal')" class="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 rounded-xl font-semibold transition">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Detalle Taller -->
+    <div id="tallerDetailModal" class="modal">
+        <div class="bg-white rounded-2xl p-8 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start mb-6">
+                <h2 class="font-display font-bold text-3xl text-dark" id="tallerName">Nombre del Taller</h2>
+                <button onclick="closeModal('tallerDetailModal')" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Galería de Imágenes -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div class="col-span-2 h-64 bg-gradient-to-br from-primary to-secondary rounded-2xl"></div>
+                <div class="h-64 bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl"></div>
+                <div class="h-48 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-2xl"></div>
+                <div class="h-48 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl"></div>
+                <div class="h-48 bg-gradient-to-br from-orange-400 to-red-400 rounded-2xl"></div>
+            </div>
+
+            <!-- Información del Taller -->
+            <div class="mb-6">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-accent mr-3">
+                        <span class="text-3xl">★★★★★</span>
+                    </div>
+                    <span class="text-gray-600 font-medium text-lg">4.9 de 5 (256 reseñas)</span>
+                </div>
+
+                <p class="text-gray-700 font-body text-lg mb-6">
+                    Especialistas en prendas de alta costura con más de 15 años de experiencia en el mercado. 
+                    Trabajamos con las mejores telas importadas y ofrecemos acabados de primera calidad. 
+                    Nuestro equipo está conformado por profesionales capacitados que garantizan excelencia en cada proyecto.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <h4 class="font-semibold text-dark mb-2">📍 Ubicación</h4>
+                        <p class="text-gray-600">Av. Principal 123, Guayaquil</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <h4 class="font-semibold text-dark mb-2">📞 Contacto</h4>
+                        <p class="text-gray-600">+593 987 654 321</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <h4 class="font-semibold text-dark mb-2">⏰ Horario</h4>
+                        <p class="text-gray-600">Lun - Vie: 8:00 AM - 6:00 PM</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-xl">
+                        <h4 class="font-semibold text-dark mb-2">✂️ Especialidad</h4>
+                        <p class="text-gray-600">Alta Costura, Uniformes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sistema de Calificación -->
+            <div class="border-t pt-6">
+                <h3 class="font-display font-bold text-2xl text-dark mb-4">Califica este Taller</h3>
+                <p class="text-gray-600 mb-4 font-body">Tu opinión ayuda a otros usuarios a tomar mejores decisiones</p>
+                
+                <div class="bg-gray-50 p-6 rounded-xl mb-6">
+                    <div class="flex items-center justify-center mb-4">
+                        <span class="rating-star text-5xl text-gray-300 hover:text-accent cursor-pointer" onclick="setRating(1)">★</span>
+                        <span class="rating-star text-5xl text-gray-300 hover:text-accent cursor-pointer" onclick="setRating(2)">★</span>
+                        <span class="rating-star text-5xl text-gray-300 hover:text-accent cursor-pointer" onclick="setRating(3)">★</span>
+                        <span class="rating-star text-5xl text-gray-300 hover:text-accent cursor-pointer" onclick="setRating(4)">★</span>
+                        <span class="rating-star text-5xl text-gray-300 hover:text-accent cursor-pointer" onclick="setRating(5)">★</span>
+                    </div>
+                    <p class="text-center text-gray-600 font-semibold" id="ratingText">Selecciona una calificación</p>
+                </div>
+
+                <form onsubmit="submitReview(event)">
+                    <textarea rows="4" placeholder="Escribe tu reseña aquí..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition mb-4"></textarea>
+                    <button type="submit" class="bg-primary hover:bg-secondary text-white px-8 py-3 rounded-xl font-semibold transition">Publicar Reseña</button>
+                </form>
+            </div>
+
+            <!-- Reseñas Recientes -->
+            <div class="border-t mt-6 pt-6">
+                <h3 class="font-display font-bold text-2xl text-dark mb-4">Reseñas Recientes</h3>
+                
+                <div class="space-y-4">
+                    <div class="bg-gray-50 p-5 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-xl">★★★★★</span>
+                            </div>
+                            <span class="font-semibold text-dark">María González</span>
+                            <span class="text-gray-500 text-sm ml-auto">Hace 2 días</span>
+                        </div>
+                        <p class="text-gray-700 font-body">Excelente trabajo, muy profesionales y puntuales. Los acabados son impecables y el precio muy justo. Totalmente recomendado.</p>
+                    </div>
+
+                    <div class="bg-gray-50 p-5 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-xl">★★★★★</span>
+                            </div>
+                            <span class="font-semibold text-dark">Carlos Mendoza</span>
+                            <span class="text-gray-500 text-sm ml-auto">Hace 1 semana</span>
+                        </div>
+                        <p class="text-gray-700 font-body">He trabajado con ellos en varios proyectos y siempre cumplen con las expectativas. Muy atentos y comprometidos con la calidad.</p>
+                    </div>
+
+                    <div class="bg-gray-50 p-5 rounded-xl">
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-accent mr-2">
+                                <span class="text-xl">★★★★☆</span>
+                            </div>
+                            <span class="font-semibold text-dark">Ana Rodríguez</span>
+                            <span class="text-gray-500 text-sm ml-auto">Hace 2 semanas</span>
+                        </div>
+                        <p class="text-gray-700 font-body">Buen servicio en general. La única observación es que tuvieron un pequeño retraso en la entrega, pero la calidad del trabajo lo compensó.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

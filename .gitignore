@@ -1,0 +1,5 @@
+# Ignorar el archivo de configuración de Firebase
+js/firebaseConfig.js
+
+# Ignorar archivos del sistema operativo
+.DS_Store
