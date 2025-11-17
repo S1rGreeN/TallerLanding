@@ -1,7 +1,5 @@
-const fs = require('fs'); // 'fs' es el "File System" de Node.js
+const fs = require('fs'); 
 
-// Obtenemos las claves de las Variables de Entorno de Vercel
-// process.env.NOMBRE_DE_LA_VARIABLE
 const configContent = `
 // Este archivo fue generado automáticamente por create-config.js
 
@@ -15,7 +13,6 @@ export const firebaseConfig = {
 };
 `;
 
-// Escribimos el contenido en el archivo que usará nuestra app
 try {
   fs.writeFileSync('js/firebaseConfig.js', configContent);
   console.log('firebaseConfig.js creado exitosamente.');

@@ -1,7 +1,6 @@
-// --- ¡AHORA IMPORTAMOS LAS FUNCIONES REALES! ---
+
 import { saveReview, getReviews } from './firebase.js';
 
-// Variables globales
 let currentRating = 0;
 let currentTallerId = null;
 
@@ -17,9 +16,6 @@ function openModal(modalId) {
   }
 }
 
-/**
- * Cierra todos los modales activos.
- */
 function closeModal() {
   document.querySelectorAll('.modal.active').forEach(modal => {
     modal.classList.remove('active');
@@ -41,7 +37,7 @@ function toggleMobileMenu() {
  */
 function setRating(rating) {
   currentRating = rating;
-  const stars = document.querySelectorAll('#tallerDetailModal .rating-star'); // Sé más específico
+  const stars = document.querySelectorAll('#tallerDetailModal .rating-star'); 
   const ratingText = document.getElementById('ratingText');
   
   stars.forEach(star => {
@@ -53,7 +49,6 @@ function setRating(rating) {
   ratingText.textContent = ratingTexts[rating] || 'Selecciona una calificación';
 }
 
-// --- NUEVAS FUNCIONES DE CALIFICACIÓN ---
 
 /**
  * Toma un array de reseñas y calcula el promedio y el conteo.
@@ -80,7 +75,7 @@ function calculateRatingStats(reviews) {
  * @returns {string} - HTML de estrellas (ej. "★★★★☆")
  */
 function getStarsHTML(averageRating) {
-  const rounded = Math.round(averageRating); // Redondear al entero más cercano
+  const rounded = Math.round(averageRating); 
   return "★".repeat(rounded) + "☆".repeat(5 - rounded);
 }
 
@@ -99,7 +94,6 @@ function renderCardRating(tallerId, stats) {
   }
   
   if (ratingEl) {
-    // Formato diferente para tarjetas top vs nuevas
     if (tallerId.startsWith('confecciones') || tallerId.startsWith('moda') || tallerId.startsWith('textiles')) {
       ratingEl.textContent = (stats.count > 0) ? `${stats.average} (${stats.count} reseñas)` : '(0 reseñas)';
     } else {
@@ -134,18 +128,14 @@ function renderModalRating(stats) {
 async function loadReviews(tallerId) {
   const reviewsContainer = document.getElementById("reviewsContainer");
   reviewsContainer.innerHTML = "<p>Cargando reseñas...</p>";
-  
-  // 1. Obtener reseñas
+ 
   const reviews = await getReviews(tallerId);
   
-  // 2. Calcular estadísticas
   const stats = calculateRatingStats(reviews);
 
-  // 3. Actualizar el rating del modal
   renderModalRating(stats);
 
-  // 4. Renderizar la lista de reseñas
-  reviewsContainer.innerHTML = ""; // Limpiar "cargando"
+  reviewsContainer.innerHTML = ""; 
   
   if (reviews.length === 0) {
     reviewsContainer.innerHTML = "<p>No hay reseñas para este taller aún. ¡Sé el primero!</p>";
@@ -185,7 +175,7 @@ async function updateCardRating(tallerId) {
  * @param {Event} event - El evento de envío del formulario
  */
 async function handleReviewSubmit(event) {
-  event.preventDefault(); // Evitar que la página se recargue
+  event.preventDefault(); 
   
   if (currentRating === 0) {
     alert('Por favor selecciona una calificación');
@@ -209,7 +199,7 @@ async function handleReviewSubmit(event) {
   if (success) {
     alert('¡Gracias por tu reseña!');
     form.reset();
-    setRating(0); // Reiniciar estrellas
+    setRating(0); 
     
     // --- [CAMBIO CLAVE] ---
     // Recargar las reseñas en el modal (esto también actualiza el rating del modal)
@@ -225,32 +215,26 @@ async function handleReviewSubmit(event) {
   submitButton.textContent = "Publicar Reseña";
 }
 
-// --- TODO SE CONECTA AQUÍ ---
+
 document.addEventListener('DOMContentLoaded', () => {
 
-  // [CORRECCIÓN] - Faltaban todos estos listeners
-  
-  // Botones de la Navbar
+
   document.getElementById('loginButton')?.addEventListener('click', () => openModal('loginModal'));
   document.getElementById('registerButton')?.addEventListener('click', () => openModal('registerModal'));
   document.getElementById('mobileMenuButton')?.addEventListener('click', toggleMobileMenu);
 
-  // Botones para cerrar modales
   document.querySelectorAll('.close-modal-button').forEach(button => {
     button.addEventListener('click', closeModal);
   });
   
-  // Clic en el fondo oscuro del modal para cerrar
   document.querySelectorAll('.modal').forEach(modal => {
     modal.addEventListener('click', (event) => {
-      // Si el clic fue en el fondo (el propio modal) y no en su contenido
       if (event.target === modal) {
         closeModal();
       }
     });
   });
   
-  // Estrellas de calificación (dentro del modal de detalle)
   document.querySelectorAll('#tallerDetailModal .rating-star').forEach(star => {
     star.addEventListener('click', () => {
       const rating = parseInt(star.dataset.rating, 10);
@@ -279,7 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('reviewForm')?.addEventListener('submit', handleReviewSubmit);
 
-  // Smooth scroll para anclas (ej. #top-talleres)
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
@@ -287,35 +270,31 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
         targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Opcional: cerrar menú móvil si está abierto
+        
         document.getElementById('mobileMenu').classList.add('hidden');
       }
     });
   });
   
-  // --- FIN DE LA CORRECCIÓN ---
 
-
-  // Botones "Ver Detalles" de los talleres
   document.querySelectorAll('[data-taller-id]').forEach(button => {
     button.addEventListener('click', () => {
       currentTallerId = button.dataset.tallerId;
       const tallerName = button.dataset.tallerName;
       
       document.getElementById('tallerName').textContent = tallerName;
-      setRating(0); // Reiniciar estrellas al abrir
+      setRating(0); 
       openModal('tallerDetailModal');
-      loadReviews(currentTallerId); // Carga las reseñas y el rating del modal
+      loadReviews(currentTallerId); 
     });
   });
 
-  // --- [NUEVO] Cargar todas las calificaciones de las tarjetas al iniciar ---
   function loadAllWorkshopRatings() {
     document.querySelectorAll('[data-taller-id]').forEach(button => {
       updateCardRating(button.dataset.tallerId);
     });
   }
   
-  loadAllWorkshopRatings(); // ¡Ejecutar al cargar la página!
+  loadAllWorkshopRatings(); 
 
 });
