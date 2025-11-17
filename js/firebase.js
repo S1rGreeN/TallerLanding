@@ -20,12 +20,12 @@ export const saveReview = async (tallerId, reviewData) => {
       rating: reviewData.rating,
       comment: reviewData.comment,
       author: "Anónimo", // Votación anónima
-      createdAt: new Date()
+      createdAt: serverTimestamp() // Usa la hora del servidor
     };
-
-    await addDoc(collection(db, "reviews"), review);
+    
+    await addDoc(reviewsCollection, review);
     return true;
-
+    
   } catch (e) {
     console.error("Error al guardar la reseña: ", e);
     return false;
@@ -40,20 +40,20 @@ export const getReviews = async (tallerId) => {
   try {
     // Consultar reseñas que coincidan con el tallerId y ordenarlas por fecha
     const q = query(
-      collection(db, "reviews"), 
+      reviewsCollection, 
       where("tallerId", "==", tallerId),
       orderBy("createdAt", "desc") // Mostrar las más nuevas primero
     );
-
+    
     const querySnapshot = await getDocs(q);
     const reviews = [];
-
+    
     querySnapshot.forEach((doc) => {
       reviews.push(doc.data());
     });
-
+    
     return reviews;
-
+    
   } catch (e) {
     console.error("Error al obtener reseñas: ", e);
     return [];

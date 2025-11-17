@@ -5,6 +5,19 @@ html {
 
 /* --- ESTILOS DE MODAL --- */
 /* Esta es la parte que faltaba */
+.hero-gradient {
+  /* Este es el gradiente que faltaba en tu hero section */
+  background: linear-gradient(135deg, rgb(250 128 114) 0%, rgb(245 158 11) 100%);
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
 
 /* El fondo oscuro */
 .modal {

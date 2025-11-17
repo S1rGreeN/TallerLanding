@@ -24,7 +24,8 @@
               'textGray': 'rgb(135 137 138)', // Gris
 
               // Colores del HTML original
-              'dark': '#1e293b'
+              'dark': '#1e293b',
+              'accent': '#f59e0b'
             },
             fontFamily: {
                 // 'Outfit' para títulos (clase font-display)
@@ -117,9 +118,9 @@
                         </div>
                         <div class="flex items-center mb-3">
                             <div class="flex text-accent mr-2">
-                                <span class="text-2xl">★★★★★</span>
+                                <span id="stars-confecciones-elite" class="text-2xl text-gray-300">★★★★★</span>
                             </div>
-                            <span class="text-gray-600 font-medium">4.9 (256 reseñas)</span>
+                            <span id="rating-confecciones-elite" class="text-gray-600 font-medium">(0 reseñas)</span>
                         </div>
                         <p class="text-gray-600 mb-4 font-body">Especialistas en prendas de alta costura con más de 15 años de experiencia. Trabajamos con las mejores telas importadas.</p>
                         <button data-taller-id="confecciones-elite" data-taller-name="Confecciones Elite" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-xl font-semibold transition">Ver Detalles</button>
@@ -136,9 +137,9 @@
                         </div>
                         <div class="flex items-center mb-3">
                             <div class="flex text-accent mr-2">
-                                <span class="text-2xl">★★★★★</span>
+                                <span id="stars-moda-express" class="text-2xl text-gray-300">★★★★★</span>
                             </div>
-                            <span class="text-gray-600 font-medium">4.8 (189 reseñas)</span>
+                            <span id="rating-moda-express" class="text-gray-600 font-medium">(0 reseñas)</span>
                         </div>
                         <p class="text-gray-600 mb-4 font-body">Confección rápida y de calidad. Especialistas en uniformes corporativos y prendas de diseño contemporáneo.</p>
                         <button data-taller-id="moda-express" data-taller-name="Moda Express" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-xl font-semibold transition">Ver Detalles</button>
@@ -155,9 +156,9 @@
                         </div>
                         <div class="flex items-center mb-3">
                             <div class="flex text-accent mr-2">
-                                <span class="text-2xl">★★★★★</span>
+                                <span id="stars-textiles-artesanales" class="text-2xl text-gray-300">★★★★★</span>
                             </div>
-                            <span class="text-gray-600 font-medium">4.7 (143 reseñas)</span>
+                            <span id="rating-textiles-artesanales" class="text-gray-600 font-medium">(0 reseñas)</span>
                         </div>
                         <p class="text-gray-600 mb-4 font-body">Trabajo artesanal con técnicas tradicionales. Perfecto para prendas únicas y exclusivas con acabados impecables.</p>
                         <button data-taller-id="textiles-artesanales" data-taller-name="Textiles Artesanales" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded-xl font-semibold transition">Ver Detalles</button>
@@ -183,9 +184,9 @@
                         <h3 class="font-display font-bold text-lg text-dark mb-2">Costura Moderna</h3>
                         <div class="flex items-center mb-2">
                             <div class="flex text-accent mr-2">
-                                <span class="text-xl">★★★★☆</span>
+                                <span id="stars-costura-moderna" class="text-xl text-gray-300">★★★★★</span>
                             </div>
-                            <span class="text-gray-600 text-sm">4.5 (12)</span>
+                            <span id="rating-costura-moderna" class="text-gray-600 text-sm">(0)</span>
                         </div>
                         <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold mb-3">Nuevo</span>
                         <p class="text-gray-600 text-sm mb-3 font-body">Innovación y estilo en cada prenda.</p>
@@ -200,9 +201,9 @@
                         <h3 class="font-display font-bold text-lg text-dark mb-2">Diseños Urbanos</h3>
                         <div class="flex items-center mb-2">
                             <div class="flex text-accent mr-2">
-                                <span class="text-xl">★★★★☆</span>
+                                <span id="stars-disenos-urbanos" class="text-xl text-gray-300">★★★★★</span>
                             </div>
-                            <span class="text-gray-600 text-sm">4.3 (8)</span>
+                            <span id="rating-disenos-urbanos" class="text-gray-600 text-sm">(0)</span>
                         </div>
                         <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold mb-3">Nuevo</span>
                         <p class="text-gray-600 text-sm mb-3 font-body">Moda urbana con actitud.</p>
@@ -217,9 +218,9 @@
                         <h3 class="font-display font-bold text-lg text-dark mb-2">Taller Creativo</h3>
                         <div class="flex items-center mb-2">
                             <div class="flex text-accent mr-2">
-                                <span class="text-xl">★★★★★</span>
+                                <span id="stars-disenos-urbanos" class="text-xl text-gray-300">★★★★★</span>
                             </div>
-                            <span class="text-gray-600 text-sm">4.6 (15)</span>
+                            <span id="rating-disenos-urbanos" class="text-gray-600 text-sm">(0)</span>
                         </div>
                         <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold mb-3">Nuevo</span>
                         <p class="text-gray-600 text-sm mb-3 font-body">Creatividad sin límites.</p>
@@ -234,9 +235,9 @@
                         <h3 class="font-display font-bold text-lg text-dark mb-2">Estilo & Confort</h3>
                         <div class="flex items-center mb-2">
                             <div class="flex text-accent mr-2">
-                                <span class="text-xl">★★★★☆</span>
+                                <span id="stars-estilo-confort" class="text-xl text-gray-300">★★★★★</span>
                             </div>
-                            <span class="text-gray-600 text-sm">4.4 (10)</span>
+                            <span id="rating-estilo-confort" class="text-gray-600 text-sm">(0)</span>
                         </div>
                         <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold mb-3">Nuevo</span>
                         <p class="text-gray-600 text-sm mb-3 font-body">Comodidad elegante.</p>
@@ -447,9 +448,9 @@
             <div class="mb-6">
                 <div class="flex items-center mb-4">
                     <div class="flex text-accent mr-3">
-                        <span class="text-3xl">★★★★★</span>
+                        <span id="modal-stars" class="text-3xl text-gray-300">★★★★★</span>
                     </div>
-                    <span class="text-gray-600 font-medium text-lg">4.9 de 5 (256 reseñas)</span>
+                    <span id="modal-rating" class="text-gray-600 font-medium text-lg">Calculando...</span>
                 </div>
 
                 <p class="text-gray-700 font-body text-lg mb-6">
